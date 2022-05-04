@@ -1,15 +1,15 @@
 <template>
-  <RouterView></RouterView>
+  <Layout></Layout>
 </template>
 
 <script>
 import { useStore } from "vuex";
 import { computed } from "vue";
+import Layout from "@/layout/Layout.vue";
 
 export default {
-  name: "App",
+  components: { Layout },
   setup() {
-    // 取得人氣推薦產品
     const store = useStore();
 
     return {
@@ -19,10 +19,4 @@ export default {
 };
 </script>
 
-<style type="scss">
-@import "@/assets/styles/all.scss";
-
-#app {
-  @apply text-dark pb-10 font-noto overflow-auto h-screen;
-}
-</style>
+<style type="scss" scoped></style>

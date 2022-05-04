@@ -1,7 +1,13 @@
 const state = {
-  de: "1",
+  user: {
+    name: "Zach",
+  },
 };
-const getters = {};
+const getters = {
+  user(state) {
+    return state.user;
+  },
+};
 const mutations = {};
 const actions = {};
 
