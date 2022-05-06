@@ -10,12 +10,19 @@
       placeholder="請輸入貼文內容"
       class="w-full shadow-md rounded-lg py-4 px-5 outline-none"
     ></textarea>
-    <label
-      class="inline-block text-white bg-dark shadow-md rounded-lg py-1 px-8 mt-4 cursor-pointer"
-      >上傳圖片
-      <span class="sr-only">111</span>
-      <input type="file" title=" 11" class="hidden" />
-    </label>
+    <div class="flex mt-4">
+      <label
+        class="inline-block text-white bg-dark shadow-md rounded-lg py-1 px-8 cursor-pointer"
+        >上傳圖片
+        <span class="sr-only"></span>
+        <input type="file" class="hidden" />
+      </label>
+      <input
+        type="text"
+        class="ml-2 flex-1 outline-none shadow-md px-2 rounded-lg"
+        placeholder="請輸入圖片網址"
+      />
+    </div>
     <img
       v-if="true"
       class="w-full mt-4 rounded-lg"

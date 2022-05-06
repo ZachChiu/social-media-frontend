@@ -9,7 +9,6 @@ import { computed } from "vue";
 export default {
   name: "App",
   setup() {
-    // 取得人氣推薦產品
     const store = useStore();
 
     return {
