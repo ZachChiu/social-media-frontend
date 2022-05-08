@@ -33,6 +33,9 @@ module.exports = {
     },
     extend: {
       spacing: {},
+      animation: {
+        "spin-slow": "spin 1.5s linear infinite",
+      },
     },
   },
   plugins: [

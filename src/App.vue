@@ -1,13 +1,16 @@
 <template>
+  <Loading></Loading>
   <RouterView></RouterView>
 </template>
 
 <script>
 import { useStore } from "vuex";
 import { computed } from "vue";
+import Loading from "@/components/Common/Loading.vue";
 
 export default {
   name: "App",
+  components: { Loading },
   setup() {
     const store = useStore();
 
@@ -18,10 +21,10 @@ export default {
 };
 </script>
 
-<style type="scss">
+<style lang="scss">
 @import "@/assets/styles/all.scss";
 
 #app {
-  @apply text-dark pb-10 font-noto overflow-auto h-screen;
+  @apply text-dark pb-10 font-noto overflow-auto h-screen select-none;
 }
 </style>
