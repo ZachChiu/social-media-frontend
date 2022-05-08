@@ -1,7 +1,7 @@
 <template>
   <div class="action card py-8 px-6 w-full md:w-[280px] lg:w-[310px] font-bold">
     <button
-      class="w-full text-center bg-primary hover:bg-secondary transition text-white py-4 rounded-lg shadow-md mb-6 font-azeret font-bold"
+      class="w-full text-center bg-primary hover:bg-secondary transition text-white py-4 rounded-shadow mb-6 font-azeret font-bold"
       @click="router.push({ name: 'post' })"
     >
       張貼動態

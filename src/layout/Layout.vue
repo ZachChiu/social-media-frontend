@@ -1,11 +1,11 @@
 <template>
   <div class="layout">
     <Header />
-    <div class="container flex items-start mt-10">
+    <div class="container flex items-start pt-10">
       <div class="flex-1 mr-5">
         <RouterView></RouterView>
       </div>
-      <Sidebar></Sidebar>
+      <Sidebar class="hidden md:block"></Sidebar>
     </div>
   </div>
 </template>
@@ -29,4 +29,4 @@ export default {
 };
 </script>
 
-<style type="scss" scoped></style>
+<style lang="scss" scoped></style>

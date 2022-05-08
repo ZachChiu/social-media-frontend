@@ -15,4 +15,4 @@ export default {
 };
 </script>
 
-<style type="scss" scoped></style>
+<style lang="scss" scoped></style>
