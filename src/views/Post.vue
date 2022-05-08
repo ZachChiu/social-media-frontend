@@ -5,43 +5,93 @@
     <textarea
       name="content"
       id="content"
-      cols="30"
-      rows="10"
+      rows="5"
       placeholder="請輸入貼文內容"
-      class="w-full shadow-md rounded-lg py-4 px-5 outline-none"
+      required
+      autofocus
+      autocomplete="off"
+      v-model="form.content"
+      class="w-full rounded-shadow py-4 px-5 outline-none resize-none"
     ></textarea>
     <div class="flex mt-4">
       <label
-        class="inline-block text-white bg-dark shadow-md rounded-lg py-1 px-8 cursor-pointer"
+        class="w-32 md:w-24 text-white bg-dark rounded-shadow py-1 text-center cursor-pointer"
         >上傳圖片
         <span class="sr-only"></span>
-        <input type="file" class="hidden" />
+        <input type="file" class="hidden" accept=".png, .jpg, .jpeg" />
       </label>
       <input
         type="text"
-        class="ml-2 flex-1 outline-none shadow-md px-2 rounded-lg"
+        class="ml-2 w-full flex-1 outline-none shadow-md px-2 rounded-shadow"
         placeholder="請輸入圖片網址"
+        v-model="form.image"
       />
     </div>
     <img
       v-if="true"
-      class="w-full mt-4 rounded-lg"
-      src="@/assets/img/post-img.png"
+      class="w-full mt-4 rounded-shadow"
+      :src="form.image"
       alt=""
     />
 
     <button
       class="bg-secondary text-dark hover:text-white hover:bg-primary disabled:bg-disabled w-[323px] font-bold mx-auto mt-8 py-4 block card"
+      @click="createPost"
     >
       送出貼文
+      <i v-if="isLoading" class="fa-solid fa-spinner animate-spin ml-1"></i>
     </button>
   </div>
 </template>
 
 <script>
+import { useToast } from "vue-toastification";
+import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+
 import Title from "@/components/Common/Title.vue";
+import postsService from "@/services/posts.js";
+
 export default {
   components: { Title },
-  setup() {},
+  setup() {
+    const toast = useToast();
+    const router = useRouter();
+
+    let isLoading = ref(false);
+    const form = reactive({
+      image: null,
+      content: null,
+    });
+
+    const createPost = async () => {
+      if (isLoading.value) {
+        return;
+      } else if (!form.content) {
+        toast.error("內容不完全");
+        return;
+      }
+      try {
+        isLoading.value = true;
+        const data = { content: form.content };
+        if (form.image) {
+          data.image = form.image;
+        }
+        await postsService.createPost(data);
+
+        toast.success("發文成功!");
+        router.push({ name: "posts-wall" });
+      } catch (error) {
+        toast.error("發文失敗");
+      } finally {
+        isLoading.value = false;
+      }
+    };
+    return {
+      form,
+      createPost,
+      isLoading,
+    };
+  },
 };
 </script>
