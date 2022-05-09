@@ -1,1 +1,0 @@
-import{_ as r,g as s,h as t}from"./index.c823c11c.js";const o={setup(){const e=s();return{user:t(()=>e.getters["user/user"])}}};function n(e,u,a,c,p,_){return"111"}var d=r(o,[["render",n]]);export{d as default};
