@@ -1,0 +1,1 @@
+import{T as e}from"./Title.037e12a7.js";import{_ as o,a as n,o as s,i as r}from"./index.a4073ed6.js";const a={components:{Title:e},setup(){}};function c(p,i,_,l,m,f){const t=n("Title");return s(),r(t,{title:"\u4FEE\u6539\u500B\u4EBA\u8CC7\u6599"})}var T=o(a,[["render",c]]);export{T as default};
