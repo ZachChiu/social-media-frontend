@@ -10,35 +10,40 @@
         <h1 class="font-paytone text-primary text-6xl leading-[84px]">
           MetaWall
         </h1>
-        <h2 class="font-bold text-2xl">到元宇宙展開全新社交圈</h2>
+        <h2 class="font-bold text-2xl">註冊</h2>
         <form class="mt-9">
           <input
+            type="text"
+            name="name"
+            id="name"
+            class="font-Azeret py-4 px-5 mb-4"
+            placeholder="暱稱"
+            v-model="form.name"
+          />
+          <input
             type="email"
-            name=""
-            id=""
+            name="email"
+            id="email"
             class="font-Azeret py-4 px-5 mb-4"
             placeholder="EMAIL"
             v-model="form.email"
           />
           <input
             type="password"
-            name=""
-            id=""
+            name="password"
+            id="password"
             class="bg-gray-light w-full font-Azeret py-4 px-5 mb-8"
             placeholder="PASSWORD"
             v-model="form.password"
           />
-          <p v-if="hasError" class="text-danger mb-4 text-sm">
-            帳號或密碼錯誤，請重新輸入！
-          </p>
           <button
             class="btn-primary mb-4"
             disabled
             @click.prevent="onClickLogin"
           >
-            登入
+            註冊
           </button>
-          <RouterLink class="link" to="/register">註冊帳號</RouterLink>
+          <RouterLink class="link" to="/login">登入</RouterLink>
         </form>
       </div>
     </div>
@@ -47,17 +52,19 @@
 
 <script>
 import { useStore } from "vuex";
-import { computed, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import MetaWallImg from "@/assets/img/meta-wall.png";
 
 export default {
   setup() {
+    const store = useStore();
+
     let hasError = ref(false);
-    const form = {
+    const form = reactive({
       email: "",
       password: "",
-    };
-    const store = useStore();
+      name: "",
+    });
 
     const onClickLogin = () => {
       console.log("login");

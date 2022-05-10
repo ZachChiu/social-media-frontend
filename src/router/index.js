@@ -29,12 +29,27 @@ const router = createRouter({
           name: "likes",
           component: () => import("@/views/Likes.vue"),
         },
+        {
+          path: "",
+          name: "personal-wall",
+          component: () => import("@/views/PersonalWall.vue"),
+        },
+        {
+          path: "",
+          name: "setting",
+          component: () => import("@/views/Setting.vue"),
+        },
       ],
     },
     {
       path: "/login",
       name: "login",
       component: () => import("@/views/Login.vue"),
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: () => import("@/views/Register.vue"),
     },
   ],
 });
