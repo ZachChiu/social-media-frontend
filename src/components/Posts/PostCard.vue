@@ -11,7 +11,7 @@
         ></i>
       </div>
       <div>
-        <p class="font-bold hover:underline hover:text-primary cursor-default">
+        <p class="link cursor-default">
           {{ post.user.name }}
         </p>
         <p class="text-xs text-gray">
@@ -43,7 +43,7 @@
 
       <div class="w-full h-full flex rounded-shadow overflow-hidden">
         <input
-          class="bg-white w-full h-full py-2 px-4 flex-1 outline-none"
+          class="bg-gray-light w-full h-full py-2 px-4 flex-1 outline-none"
           type="text"
           placeholder="說點什麼..."
         />

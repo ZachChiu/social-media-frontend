@@ -7,6 +7,17 @@
     @apply shadow-md rounded-lg;
   }
   .card {
-    @apply shadow-md rounded-lg bg-gray-light;
+    @apply shadow border-gray border-opacity-30 border rounded-lg bg-white;
+  }
+  input,
+  textarea {
+    @apply w-full rounded-shadow outline-none resize-none bg-gray-light font-azeret;
+  }
+  .btn-primary {
+    @apply w-full text-center bg-primary hover:bg-secondary disabled:bg-disabled transition text-white py-4 rounded-shadow font-azeret font-bold;
+  }
+
+  .link {
+    @apply font-bold inline-block hover:underline hover:text-primary;
   }
 }

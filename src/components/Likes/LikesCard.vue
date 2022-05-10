@@ -3,7 +3,7 @@
     <div class="flex items-center">
       <img class="w-[40px] mr-4" src="@/assets/img/default-user.png" alt="" />
       <div>
-        <p class="font-bold">username</p>
+        <p class="link">username</p>
         <p class="text-sm text-gray">發文時間：2022/1/10 12:00</p>
       </div>
     </div>

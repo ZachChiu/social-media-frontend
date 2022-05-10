@@ -1,10 +1,10 @@
 <template>
-  <div class="mb-5 flex">
+  <div class="mb-4 flex">
     <select
       v-model="timeSort"
       name=""
       id=""
-      class="py-3 pl-4 pr-1 mr-3 card outline-none"
+      class="py-3 pl-4 pr-1 mr-3 outline-none shadow-md rounded-lg bg-white"
       @change="getPosts"
     >
       <option
@@ -15,9 +15,9 @@
         {{ option.text }}
       </option>
     </select>
-    <div class="w-full flex card overflow-hidden">
+    <div class="w-full flex shadow-md rounded-lg overflow-hidden">
       <input
-        class="bg-gray-light w-full h-full py-3 px-4 outline-none flex-1"
+        class="bg-white w-full h-full py-3 px-4 outline-none flex-1"
         type="text"
         v-model="searchKeyword"
         placeholder="搜尋貼文"
@@ -39,12 +39,8 @@
     />
   </template>
 
-  <div
-    v-else-if="posts.length === 0"
-    class="empty card w-full text-gray text-center py-10 p-4"
-  >
-    目前尚無動態，要不要跟大家分享今天發生什麼事
-  </div>
+  <EmptyCard v-else-if="posts.length === 0" />
+
   <template v-else>
     <PostCard
       v-for="post in posts"
@@ -60,12 +56,13 @@
 <script>
 import PostCard from "@/components/Posts/PostCard.vue";
 import LoadingCard from "@/components/Common/LoadingCard.vue";
+import EmptyCard from "@/components/Common/EmptyCard.vue";
 import postsService from "@/services/posts.js";
 import { ref, reactive, readonly, onMounted } from "vue";
 import { useToast } from "vue-toastification";
 
 export default {
-  components: { PostCard, LoadingCard },
+  components: { PostCard, LoadingCard, EmptyCard },
   setup() {
     const toast = useToast();
 

@@ -25,6 +25,6 @@ export default {
 @import "@/assets/styles/all.scss";
 
 #app {
-  @apply text-dark pb-10 font-noto overflow-auto h-screen select-none;
+  @apply text-dark bg-gray-light  font-noto overflow-auto h-screen select-none;
 }
 </style>

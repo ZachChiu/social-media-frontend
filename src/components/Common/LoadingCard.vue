@@ -1,5 +1,5 @@
 <template>
-  <div class="loading-card card p-4 w-full mx-auto">
+  <div class="loading-card card p-4 w-full">
     <div class="animate-pulse flex space-x-4">
       <div class="rounded-full bg-slate-200 h-10 w-10 bg-gray"></div>
       <div class="flex-1 space-y-6 py-1">

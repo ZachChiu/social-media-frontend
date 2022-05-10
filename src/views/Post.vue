@@ -11,7 +11,7 @@
       autofocus
       autocomplete="off"
       v-model="form.content"
-      class="w-full rounded-shadow py-4 px-5 outline-none resize-none"
+      class="py-4 px-5"
     ></textarea>
     <div class="flex mt-4">
       <label
@@ -22,7 +22,7 @@
       </label>
       <input
         type="text"
-        class="ml-2 w-full flex-1 outline-none shadow-md px-2 rounded-shadow"
+        class="ml-2 flex-1 px-2"
         placeholder="請輸入圖片網址"
         v-model="form.image"
       />
@@ -35,7 +35,8 @@
     />
 
     <button
-      class="bg-secondary text-dark hover:text-white hover:bg-primary disabled:bg-disabled w-[323px] font-bold mx-auto mt-8 py-4 block card"
+      class="bg-secondary text-dark hover:text-white hover:bg-primary disabled:bg-disabled disabled:text-white w-[323px] font-bold mx-auto mt-8 py-4 block card"
+      disabled
       @click="createPost"
     >
       送出貼文

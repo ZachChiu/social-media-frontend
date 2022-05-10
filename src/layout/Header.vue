@@ -1,5 +1,5 @@
 <template>
-  <header class="h-[60px] shadow-lg bg-gray-light">
+  <header class="h-[60px] shadow-md bg-white sticky top-0 z-10">
     <div class="container h-full flex items-center justify-between relative">
       <RouterLink
         to="/"
@@ -47,8 +47,8 @@ export default {
     const router = useRouter();
 
     const actions = reactive([
-      { text: "我的貼文牆", value: "my-posts" },
-      { text: "修改個人資料", value: "update-user" },
+      { text: "我的貼文牆", value: "personal-wall" },
+      { text: "修改個人資料", value: "setting" },
       { text: "登出", value: "logout" },
     ]);
 
@@ -57,8 +57,11 @@ export default {
         case "logout":
           router.push({ name: "login" });
           break;
-
-        default:
+        case "personal-wall":
+          router.push({ name: "personal-wall" });
+          break;
+        case "setting":
+          router.push({ name: "setting" });
           break;
       }
     };

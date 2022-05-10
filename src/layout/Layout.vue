@@ -1,8 +1,8 @@
 <template>
-  <div class="layout">
+  <div class="layout pb-10">
     <Header />
     <div class="container flex items-start pt-10">
-      <div class="flex-1 mr-5">
+      <div class="flex-1 md:mr-5">
         <RouterView></RouterView>
       </div>
       <Sidebar class="hidden md:block"></Sidebar>
