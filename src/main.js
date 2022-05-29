@@ -7,6 +7,8 @@ import "vue-toastification/dist/index.css";
 const app = createApp(App);
 
 const toastOption = {
+  timeout: 2000,
+
   filterBeforeCreate: (toast, toasts) => {
     if (toasts.filter((t) => t.type === toast.type).length !== 0) {
       return false;

@@ -9,7 +9,7 @@
     </div>
     <div class="flex items-center text-center">
       <div
-        class="mr-9 cursor-pointer text-primary hover:text-gray flex flex-col items-center"
+        class="mr-5 md:mr-9 cursor-pointer text-primary hover:text-gray flex flex-col items-center"
       >
         <i class="fa-regular fa-thumbs-up text-xl"></i>
         <p class="text-sm font-bold">取消</p>

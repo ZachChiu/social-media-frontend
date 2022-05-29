@@ -17,15 +17,8 @@
       <label
         class="w-32 md:w-24 text-white bg-dark rounded-shadow py-1 text-center cursor-pointer"
         >上傳圖片
-        <span class="sr-only"></span>
         <input type="file" class="hidden" accept=".png, .jpg, .jpeg" />
       </label>
-      <input
-        type="text"
-        class="ml-2 flex-1 px-2"
-        placeholder="請輸入圖片網址"
-        v-model="form.image"
-      />
     </div>
     <img
       v-if="true"
@@ -35,8 +28,8 @@
     />
 
     <button
-      class="bg-secondary text-dark hover:text-white hover:bg-primary disabled:bg-disabled disabled:text-white w-[323px] font-bold mx-auto mt-8 py-4 block card"
-      disabled
+      class="bg-secondary text-dark hover:text-white hover:bg-primary disabled:bg-disabled disabled:text-white w-full lg:w-[323px] font-bold mx-auto mt-8 py-4 block card"
+      :disabled="isLoading"
       @click="createPost"
     >
       送出貼文

@@ -17,14 +17,14 @@
     </select>
     <div class="w-full flex shadow-md rounded-lg overflow-hidden">
       <input
-        class="bg-white w-full h-full py-3 px-4 outline-none flex-1"
+        class="!bg-white w-full h-full py-3 px-4 outline-none flex-1 !rounded-r-none"
         type="text"
         v-model="searchKeyword"
         placeholder="搜尋貼文"
         @keyup.enter="getPosts"
       />
       <button
-        class="block text-white w-[46px] bg-primary hover:bg-secondary font-[20px] outline-none"
+        class="block text-white w-[46px] btn-secondary font-[20px] outline-none rounded-l-none"
         @click="getPosts"
       >
         <i class="fa-solid fa-magnifying-glass"></i>
