@@ -4,14 +4,19 @@
       <div
         class="w-[45px] h-[45px] user-img-wrapper mr-4 rounded-full overflow-hidden"
       >
-        <img v-if="post.user.photo" class="" :src="post.user.photo" alt="" />
+        <img
+          v-if="post.user.photo"
+          class="w-full h-full object-cover"
+          :src="post.user.photo"
+          alt=""
+        />
         <i
           v-else
           class="fa-solid fa-user text-lg text-center text-gray bg-white w-full h-full flex items-center justify-center"
         ></i>
       </div>
       <div>
-        <p class="link cursor-default">
+        <p class="link cursor-pointer">
           {{ post.user.name }}
         </p>
         <p class="text-xs text-gray">
@@ -39,14 +44,19 @@
       <span v-else class="group-hover:text-primary">成為第一個按讚的朋友</span>
     </div>
     <div class="flex items-center mt-4">
-      <img class="w-[40px] mr-4" src="@/assets/img/default-user.png" alt="" />
+      <img class="w-[40px] mr-4" :src="userPhoto" alt="" />
 
       <div class="w-full h-full flex rounded-shadow overflow-hidden">
-        <input
-          class="bg-gray-light w-full h-full py-2 px-4 flex-1 outline-none"
-          type="text"
+        <textarea
+          name="content"
+          id="content"
+          rows="1"
           placeholder="說點什麼..."
-        />
+          required
+          autofocus
+          autocomplete="off"
+          class="py-1 px-2"
+        ></textarea>
         <button
           class="block text-white w-[100px] bg-primary hover:bg-secondary font-[20px] outline-none"
         >
@@ -62,6 +72,8 @@
 <script>
 import Comment from "@/components/Posts/Comment.vue";
 import dayjs from "dayjs"; //
+import { computed } from "vue";
+import { useStore } from "vuex";
 
 export default {
   components: { Comment },
@@ -74,6 +86,7 @@ export default {
     },
   },
   setup(props, { emit }) {
+    const store = useStore();
     const toggleLike = () => {
       emit("toggle-like");
     };
@@ -86,6 +99,7 @@ export default {
       dayjs,
       toggleLike,
       processContent,
+      userPhoto: computed(() => store.getters["users/userPhoto"]),
     };
   },
 };

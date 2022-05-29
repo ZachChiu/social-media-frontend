@@ -13,7 +13,7 @@ export default {
     const store = useStore();
 
     return {
-      user: computed(() => store.getters["user/user"]),
+      user: computed(() => store.getters["users/user"]),
     };
   },
 };

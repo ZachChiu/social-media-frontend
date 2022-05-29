@@ -1,6 +1,7 @@
 const domain = "https://meta-wall.herokuapp.com/";
 const url = {
   posts: domain + "posts/",
+  users: domain + "users/",
 };
 
 export default url;

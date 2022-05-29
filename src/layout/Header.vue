@@ -14,12 +14,12 @@
         aria-haspopup="true"
       >
         <img
-          src="@/assets/img/default-user.png"
+          :src="userPhoto"
           class="object-contain h-full rounded-full border-dark border-2 mr-3"
           alt=""
         />
         <p class="truncate max-w-[70px] border-b-2 font-bold font-azeret">
-          username
+          {{ user.name }}
         </p>
         <div
           class="hidden group-hover:block absolute right-[1rem] top-full z-10 shadow-md w-[182px]"
@@ -39,12 +39,13 @@
 </template>
 
 <script>
-import { reactive } from "vue";
+import { reactive, computed } from "vue";
 import { useRouter } from "vue-router";
-
+import { useStore } from "vuex";
 export default {
   setup() {
     const router = useRouter();
+    const store = useStore();
 
     const actions = reactive([
       { text: "我的貼文牆", value: "personal-wall" },
@@ -55,7 +56,9 @@ export default {
     const onClickAction = (value) => {
       switch (value) {
         case "logout":
-          router.push({ name: "login" });
+          store.commit("users/setSignOut");
+          router.push({ name: "sign-in" });
+
           break;
         case "personal-wall":
           router.push({ name: "personal-wall" });
@@ -65,9 +68,12 @@ export default {
           break;
       }
     };
+
     return {
       actions,
       onClickAction,
+      user: computed(() => store.getters["users/user"]),
+      userPhoto: computed(() => store.getters["users/userPhoto"]),
     };
   },
 };
