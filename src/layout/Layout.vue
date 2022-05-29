@@ -5,7 +5,7 @@
       class="h-[calc(100vh-128px)] overflow-auto md:h-auto md:overflow-visible"
     >
       <div class="container flex items-start pt-10 pb-10 md:pb-0">
-        <div class="flex-1 md:mr-5">
+        <div class="flex-1 mr-5 last:mr-0">
           <RouterView></RouterView>
         </div>
         <Sidebar></Sidebar>
@@ -28,9 +28,7 @@ export default {
   setup() {
     const store = useStore();
 
-    return {
-      user: computed(() => store.getters["user/user"]),
-    };
+    return { user: computed(() => store.getters["user/user"]) };
   },
 };
 </script>

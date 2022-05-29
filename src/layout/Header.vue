@@ -8,6 +8,7 @@
         MetaWall
       </RouterLink>
       <div
+        v-if="route.name !== 'not-found'"
         class="group flex items-center py-4 h-full cursor-pointer"
         id="menu-button"
         aria-expanded="true"
@@ -40,11 +41,12 @@
 
 <script>
 import { reactive, computed } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 export default {
   setup() {
     const router = useRouter();
+    const route = useRoute();
     const store = useStore();
 
     const actions = reactive([
@@ -71,6 +73,7 @@ export default {
 
     return {
       actions,
+      route,
       onClickAction,
       user: computed(() => store.getters["users/user"]),
       userPhoto: computed(() => store.getters["users/userPhoto"]),
