@@ -9,7 +9,7 @@ export default {
   props: {
     state: {
       type: String,
-      default: "目前尚無動態，要不要跟大家分享今天發生什麼事",
+      default: "目前尚無動態",
     },
   },
   setup() {

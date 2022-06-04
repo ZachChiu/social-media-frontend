@@ -16,7 +16,7 @@
       >
         <img
           :src="userPhoto"
-          class="object-contain h-full rounded-full border-dark border-2 mr-3"
+          class="object-contain h-full rounded-full border-dark border border-gray mr-3 p-1"
           alt=""
         />
         <p class="truncate max-w-[70px] border-b-2 font-bold font-azeret">
@@ -49,6 +49,8 @@ export default {
     const route = useRoute();
     const store = useStore();
 
+    const user = computed(() => store.getters["users/user"]);
+
     const actions = reactive([
       { text: "我的貼文牆", value: "personal-wall" },
       { text: "修改個人資料", value: "setting" },
@@ -63,7 +65,12 @@ export default {
 
           break;
         case "personal-wall":
-          router.push({ name: "personal-wall" });
+          router.push({
+            name: "personal-wall",
+            params: {
+              userId: user.value._id,
+            },
+          });
           break;
         case "setting":
           router.push({ name: "setting" });
@@ -75,7 +82,7 @@ export default {
       actions,
       route,
       onClickAction,
-      user: computed(() => store.getters["users/user"]),
+      user,
       userPhoto: computed(() => store.getters["users/userPhoto"]),
     };
   },

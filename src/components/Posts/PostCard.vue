@@ -5,22 +5,18 @@
         class="w-[45px] h-[45px] user-img-wrapper mr-4 rounded-full overflow-hidden"
       >
         <img
-          v-if="post.user.photo"
           class="w-full h-full object-cover"
-          :src="post.user.photo"
+          :class="{ 'p-2': !post.user.photo }"
+          :src="post.user.photo || defaultUserImg"
           alt=""
         />
-        <i
-          v-else
-          class="fa-solid fa-user text-lg text-center text-gray bg-white w-full h-full flex items-center justify-center"
-        ></i>
       </div>
       <div>
-        <p class="link cursor-pointer">
+        <p class="link cursor-pointer" @click="onClickPersonal">
           {{ post.user.name }}
         </p>
         <p class="text-xs text-gray">
-          {{ dayjs(post.createAt).format("YYYY/MM/DD mm:ss") }}
+          {{ dayjs(post.createdAt).format("YYYY/MM/DD mm:ss") }}
         </p>
       </div>
     </div>
@@ -32,19 +28,26 @@
       alt=""
     />
     <div
-      class="group likes mt-4 inline-block cursor-pointer"
-      @click="toggleLike"
+      class="group likes mt-4 cursor-pointer flex items-center w-fit"
+      @click="onClickLike"
     >
       <i
-        class="fa-regular fa-thumbs-up transition group-hover:text-primary mr-2 text-[20px]"
+        v-if="post.isLoading"
+        class="fa-solid fa-spinner text-primary animate-spin-slow text-[20px]"
       ></i>
-      <span v-if="post.likes" class="group-hover:text-primary">{{
-        post.likes
+      <i
+        v-else
+        class="fa-regular fa-thumbs-up transition group-hover:text-primary text-[20px]"
+        :class="{ 'text-primary': hasLikePost }"
+      ></i>
+
+      <span v-if="post.likes.length" class="ml-2 group-hover:text-primary">{{
+        getLikesText
       }}</span>
       <span v-else class="group-hover:text-primary">成為第一個按讚的朋友</span>
     </div>
     <div class="flex items-center mt-4">
-      <img class="w-[40px] mr-4" :src="userPhoto" alt="" />
+      <img class="w-[40px] mr-4 p-2" :src="userPhoto" alt="" />
 
       <div class="w-full h-full flex rounded-shadow overflow-hidden">
         <textarea
@@ -71,9 +74,11 @@
 
 <script>
 import Comment from "@/components/Posts/Comment.vue";
-import dayjs from "dayjs"; //
+import defaultUserImg from "@/assets/img/default-user.png";
+import dayjs from "dayjs";
 import { computed } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default {
   components: { Comment },
@@ -87,19 +92,54 @@ export default {
   },
   setup(props, { emit }) {
     const store = useStore();
-    const toggleLike = () => {
-      emit("toggle-like");
-    };
-
+    const router = useRouter();
     const processContent = (conetent) => {
       return conetent.replace("\n", "<br>");
     };
 
+    const user = computed(() => store.getters["users/user"]);
+
+    const hasLikePost = computed(() =>
+      props.post.likes.includes(user.value._id)
+    );
+
+    const getLikesText = computed(() => {
+      let text = props.post.likes.length;
+      let num = props.post.likes.length;
+      if (hasLikePost.value) {
+        text = `你${num - 1 > 0 ? `和其他 ${num - 1} 人` : ""}`;
+      }
+      return text;
+    });
+
+    const onClickLike = () => {
+      if (props.post.isLoading) {
+        return;
+      }
+      if (hasLikePost.value) {
+        emit("unlike-post", props.post._id);
+      } else {
+        emit("like-post", props.post._id);
+      }
+    };
+
+    const onClickPersonal = () => {
+      router.push({
+        name: "personal-wall",
+        params: { userId: props.post.user._id },
+      });
+    };
+
     return {
       dayjs,
-      toggleLike,
+      onClickLike,
+      user,
       processContent,
+      onClickPersonal,
+      getLikesText,
+      hasLikePost,
       userPhoto: computed(() => store.getters["users/userPhoto"]),
+      defaultUserImg,
     };
   },
 };

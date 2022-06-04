@@ -20,9 +20,14 @@ const router = createRouter({
           component: () => import("@/views/PostsWall.vue"),
         },
         {
-          path: "post",
+          path: "post/:postId",
           name: "post",
           component: () => import("@/views/Post.vue"),
+        },
+        {
+          path: "create-post",
+          name: "create-post",
+          component: () => import("@/views/CreatePost.vue"),
         },
         {
           path: "follows",
@@ -35,7 +40,7 @@ const router = createRouter({
           component: () => import("@/views/Likes.vue"),
         },
         {
-          path: "personal-wall",
+          path: "personal-wall/:userId",
           name: "personal-wall",
           component: () => import("@/views/PersonalWall.vue"),
         },
@@ -63,8 +68,9 @@ router.beforeEach(async (to, from, next) => {
   const hasAuth = localStorage.getItem("jwt");
   if (hasAuth || ["sign-in", "sign-up", "not-found"].includes(to.name)) {
     next();
+  } else {
+    next({ name: "sign-in" });
   }
-  next({ name: "sign-in" });
 });
 
 export default router;

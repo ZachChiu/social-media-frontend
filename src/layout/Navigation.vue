@@ -28,7 +28,6 @@ import { useRouter, useRoute } from "vue-router";
 export default {
   setup() {
     const router = useRouter();
-
     const route = useRoute();
 
     const navigations = computed(() => [
@@ -46,7 +45,7 @@ export default {
       },
       {
         icon: "fa-solid fa-plus",
-        value: "post",
+        value: "create-post",
       },
     ]);
 

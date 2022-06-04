@@ -47,7 +47,8 @@
       :key="post.id"
       :post="post"
       class="mb-4 last:mb-0"
-      @toggle-like="toggleLike"
+      @unlike-post="toggleLike($event, 'unlike')"
+      @like-post="toggleLike($event, 'like')"
     >
     </PostCard>
   </template>
@@ -58,13 +59,17 @@ import PostCard from "@/components/Posts/PostCard.vue";
 import LoadingCard from "@/components/Common/LoadingCard.vue";
 import EmptyCard from "@/components/Common/EmptyCard.vue";
 import postsService from "@/services/posts.js";
-import { ref, reactive, readonly, onMounted } from "vue";
+import { ref, reactive, readonly, onMounted, computed, watch } from "vue";
 import { useToast } from "vue-toastification";
+import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 
 export default {
   components: { PostCard, LoadingCard, EmptyCard },
   setup() {
     const toast = useToast();
+    const store = useStore();
+    const route = useRoute();
 
     let timeSort = ref("desc");
     let searchKeyword = ref(null);
@@ -80,14 +85,27 @@ export default {
         value: "asc",
       },
     ]);
+
+    const user = computed(() => store.getters["users/user"]);
+    const isUser = computed(() => user.value._id === route.params.userId);
+
     const getPosts = async () => {
       try {
         posts.splice(0);
         isLoading.value = true;
-        const result = await postsService.getPosts({
-          timeSort: timeSort.value,
-          content: searchKeyword.value,
-        });
+        let result = null;
+        if (route.name === "posts-wall") {
+          result = await postsService.getPosts({
+            timeSort: timeSort.value,
+            content: searchKeyword.value,
+          });
+        } else {
+          result = await postsService.getUserPosts({
+            userId: route.params.userId,
+            timeSort: timeSort.value,
+            content: searchKeyword.value,
+          });
+        }
         posts.push(...result);
         isLoading.value = false;
       } catch (error) {
@@ -95,12 +113,32 @@ export default {
       }
     };
 
-    const toggleLike = () => {
-      toast.info("功能還沒做好啦");
+    const toggleLike = async (_id, action) => {
+      let newPost = {};
+      const index = posts.findIndex((post) => post._id === _id);
+      posts[index].isLoading = true;
+      try {
+        if (action === "like") {
+          newPost = await postsService.likePost(_id);
+        } else {
+          newPost = await postsService.unlikePost(_id);
+        }
+
+        posts[index].likes = newPost.data.likes;
+      } catch (error) {
+        toast.error(action === "like" ? "取消按讚失敗" : "按讚失敗");
+      } finally {
+        posts[index].isLoading = false;
+      }
     };
 
     onMounted(() => {
       getPosts();
+    });
+    watch(route, () => {
+      if (route.name === "personal-wall") {
+        getPosts();
+      }
     });
     return {
       posts,
@@ -110,6 +148,7 @@ export default {
       searchKeyword,
       getPosts,
       toggleLike,
+      isUser,
     };
   },
 };

@@ -1,90 +1,69 @@
 <template>
-  <Title title="張貼動態"></Title>
-  <div class="card p-8">
-    <label class="block mb-2" for="content">貼文內容</label>
-    <textarea
-      name="content"
-      id="content"
-      rows="5"
-      placeholder="請輸入貼文內容"
-      required
-      autofocus
-      autocomplete="off"
-      v-model="form.content"
-      class="py-4 px-5"
-    ></textarea>
-    <div class="flex mt-4">
-      <label
-        class="w-32 md:w-24 text-white bg-dark rounded-shadow py-1 text-center cursor-pointer"
-        >上傳圖片
-        <input type="file" class="hidden" accept=".png, .jpg, .jpeg" />
-      </label>
-    </div>
-    <img
-      v-if="true"
-      class="w-full mt-4 rounded-shadow"
-      :src="form.image"
-      alt=""
-    />
-
-    <button
-      class="bg-secondary text-dark hover:text-white hover:bg-primary disabled:bg-disabled disabled:text-white w-full lg:w-[323px] font-bold mx-auto mt-8 py-4 block card"
-      :disabled="isLoading"
-      @click="createPost"
-    >
-      送出貼文
-      <i v-if="isLoading" class="fa-solid fa-spinner animate-spin ml-1"></i>
-    </button>
-  </div>
+  <LoadingCard v-if="isLoading" />
+  <EmptyCard v-else-if="!post._id" />
+  <PostCard
+    v-else
+    :post="post"
+    @unlike-post="toggleLike($event, 'unlike')"
+    @like-post="toggleLike($event, 'like')"
+  >
+  </PostCard>
 </template>
 
 <script>
-import { useToast } from "vue-toastification";
-import { reactive, ref } from "vue";
-import { useRouter } from "vue-router";
-
-import Title from "@/components/Common/Title.vue";
+import PostCard from "@/components/Posts/PostCard.vue";
+import LoadingCard from "@/components/Common/LoadingCard.vue";
+import EmptyCard from "@/components/Common/EmptyCard.vue";
 import postsService from "@/services/posts.js";
+import { onMounted, reactive, ref } from "vue";
+import { useRoute } from "vue-router";
+import { useToast } from "vue-toastification";
 
 export default {
-  components: { Title },
+  components: { PostCard, LoadingCard, EmptyCard },
   setup() {
+    const route = useRoute();
     const toast = useToast();
-    const router = useRouter();
+    let post = reactive({});
+    let isLoading = ref(true);
 
-    let isLoading = ref(false);
-    const form = reactive({
-      image: null,
-      content: null,
-    });
-
-    const createPost = async () => {
-      if (isLoading.value) {
-        return;
-      } else if (!form.content) {
-        toast.error("內容不完全");
-        return;
-      }
+    const getPost = async () => {
       try {
         isLoading.value = true;
-        const data = { content: form.content };
-        if (form.image) {
-          data.image = form.image;
-        }
-        await postsService.createPost(data);
-
-        toast.success("發文成功!");
-        router.push({ name: "posts-wall" });
+        const result = await postsService.getPost(route.params.postId);
+        Object.assign(post, result);
       } catch (error) {
-        toast.error("發文失敗");
+        toast.error("查無貼文");
       } finally {
         isLoading.value = false;
       }
     };
+
+    const toggleLike = async (_id, action) => {
+      let newPost = {};
+      post.isLoading = true;
+      try {
+        if (action === "like") {
+          newPost = await postsService.likePost(_id);
+        } else {
+          newPost = await postsService.unlikePost(_id);
+        }
+
+        post.likes = newPost.data.likes;
+      } catch (error) {
+        toast.error(action === "like" ? "取消按讚失敗" : "按讚失敗");
+      } finally {
+        post.isLoading = false;
+      }
+    };
+
+    onMounted(() => {
+      getPost();
+    });
     return {
-      form,
-      createPost,
+      post,
       isLoading,
+      toggleLike,
     };
   },
 };

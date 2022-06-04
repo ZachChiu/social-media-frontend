@@ -2,7 +2,10 @@
   <div
     class="card py-8 px-6 w-full md:w-[280px] lg:w-[310px] font-bold sticky top-[100px] hidden md:block"
   >
-    <button class="btn-primary mb-6" @click="router.push({ name: 'post' })">
+    <button
+      class="btn-primary mb-6"
+      @click="router.push({ name: 'create-post' })"
+    >
       張貼動態
     </button>
     <ul class="transition">
@@ -10,12 +13,12 @@
         v-for="navigation in navigations"
         :key="navigation.value"
         class="group flex items-center mb-[22px] last:mb-0 cursor-pointer"
-        @click="router.push({ name: navigation.value })"
+        @click="onClickSideBar(navigation.value)"
       >
         <img
           v-if="navigation.img"
           :src="navigation.img"
-          class="object-contain w-[50px] h-[50px] rounded-full mr-4 border border-gray bg-info"
+          class="object-contain w-[50px] h-[50px] rounded-full mr-4 border border-gray bg-info p-2"
         />
         <i
           v-if="navigation.icon"
@@ -60,11 +63,29 @@ export default {
       },
     ]);
 
+    const onClickSideBar = (value) => {
+      switch (value) {
+        case "personal-wall":
+          router.push({
+            name: value,
+            params: {
+              userId: user.value._id,
+            },
+          });
+          break;
+
+        default:
+          router.push({ name: value });
+
+          break;
+      }
+    };
     return {
       router,
       navigations,
       user,
       userPhoto,
+      onClickSideBar,
     };
   },
 };
