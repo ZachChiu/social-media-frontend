@@ -16,32 +16,42 @@
         </h1>
         <h2 class="font-bold text-xl md:text-2xl">到元宇宙展開全新社交圈</h2>
         <form class="mt-9">
-          <input
-            type="email"
-            name="email"
-            id="email"
-            class="font-Azeret py-3 px-5 mb-4"
-            placeholder="EMAIL"
-            v-model="form.email"
-          />
-          <!-- <p class="text-danger mb-3 text-sm text-left">
-            {{ emailError }}
-          </p> -->
-          <input
-            type="password"
-            name="password"
-            id="password"
-            class="bg-gray-light w-full font-Azeret py-3 px-5 mb-4"
-            placeholder="PASSWORD"
-            v-model="form.password"
-          />
-          <!-- <p class="text-danger mb-3 text-sm text-left">
-            {{ passwordError }}
-          </p> -->
+          <div class="mb-8 relative">
+            <input
+              type="email"
+              name="email"
+              id="email"
+              class="font-Azeret py-3 px-5"
+              placeholder="EMAIL"
+              v-model="form.email"
+              @blur="v$.email.$touch()"
+            />
+            <p
+              v-if="v$.email.$invalid"
+              class="text-danger mt-2 text-xs text-left absolute"
+            >
+              {{ v$.email.$errors[0].$message }}
+            </p>
+          </div>
 
-          <!-- <p v-if="hasError" class="text-danger mb-4 text-sm">
-            帳號或密碼錯誤，請重新輸入！
-          </p> -->
+          <div class="mb-11 relative">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="bg-gray-light w-full font-Azeret py-3 px-5"
+              placeholder="PASSWORD"
+              v-model="form.password"
+              @blur="v$.password.$touch()"
+            />
+            <p
+              v-if="v$.password.$invalid"
+              class="text-danger mt-2 text-xs text-left absolute"
+            >
+              {{ v$.password.$errors[0].$message }}
+            </p>
+          </div>
+
           <button
             class="btn-primary mb-4"
             :disabled="isLoading"
@@ -62,11 +72,12 @@
 
 <script>
 import { useStore } from "vuex";
-import { computed, ref } from "vue";
+import { reactive, ref } from "vue";
 import { useToast } from "vue-toastification";
 import { useRouter } from "vue-router";
 import MetaWallImg from "@/assets/img/meta-wall.png";
-// import { useForm, useField } from "vee-validate";
+import useVuelidate from "@vuelidate/core";
+import { required, email, minLength, helpers } from "@vuelidate/validators";
 
 export default {
   setup() {
@@ -74,16 +85,31 @@ export default {
     const store = useStore();
     const router = useRouter();
 
-    let hasError = ref(false);
     let isLoading = ref(false);
 
-    const form = {
+    const form = reactive({
       email: "",
       password: "",
+    });
+
+    const rules = {
+      email: {
+        required: helpers.withMessage("請輸入 Email", required),
+        email: helpers.withMessage("Email 格式錯誤", email),
+        $lazy: true,
+      },
+      password: {
+        required: helpers.withMessage("請輸入密碼", required),
+        minLength: helpers.withMessage("密碼最少為 8 碼", minLength(8)),
+        $lazy: true,
+      },
     };
 
+    const v$ = useVuelidate(rules, form);
+
     const onClickLogin = async () => {
-      if (isLoading.value) {
+      v$.value.$touch();
+      if (v$.value.$invalid || isLoading.value) {
         return;
       }
       try {
@@ -103,11 +129,10 @@ export default {
     };
 
     return {
+      v$,
       isLoading,
       MetaWallImg,
       form,
-      hasError,
-      user: computed(() => store.getters["user/user"]),
       onClickLogin,
     };
   },
