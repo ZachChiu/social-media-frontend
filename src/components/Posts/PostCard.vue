@@ -44,7 +44,9 @@
       <span v-if="post.likes.length" class="ml-2 group-hover:text-primary">{{
         getLikesText
       }}</span>
-      <span v-else class="group-hover:text-primary">成為第一個按讚的朋友</span>
+      <span v-else class="ml-2 group-hover:text-primary"
+        >成為第一個按讚的朋友</span
+      >
     </div>
     <div class="flex items-center mt-4">
       <img class="w-[40px] mr-4 p-2" :src="userPhoto" alt="" />
@@ -58,10 +60,10 @@
           required
           autofocus
           autocomplete="off"
-          class="py-1 px-2"
+          class="py-1 px-2 rounded-r-none"
         ></textarea>
         <button
-          class="block text-white w-[100px] bg-primary hover:bg-secondary font-[20px] outline-none"
+          class="btn-secondary block text-white w-[100px] font-[20px] outline-none rounded-l-none"
         >
           留言
         </button>

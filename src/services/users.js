@@ -35,6 +35,22 @@ async function signUp({ name, email, password, confirmPassword }) {
 }
 
 /**
+ * 註冊
+ * @param {String} password password
+ * @param {String} confirmPassword confirmPassword
+ * @returns {Promise} promise
+ */
+async function updatePassword({ password, confirmPassword }) {
+  const res = await callApi({
+    category: "users",
+    apiName: "updatePassword",
+    method: "post",
+    data: { password, confirmPassword },
+  });
+  return res.data.data;
+}
+
+/**
  * 取得更人資料
  * @returns {Promise} promise
  */
@@ -51,4 +67,5 @@ export default {
   signIn,
   signUp,
   getUser,
+  updatePassword,
 };
