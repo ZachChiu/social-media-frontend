@@ -5,7 +5,7 @@
       class="h-[calc(100vh-128px)] overflow-auto md:h-auto md:overflow-visible"
     >
       <div class="container flex items-start pt-10 pb-10 md:pb-0">
-        <div class="flex-1 mr-5 last:mr-0">
+        <div class="flex-1 mr-0 md:mr-5">
           <RouterView></RouterView>
         </div>
         <Sidebar></Sidebar>
