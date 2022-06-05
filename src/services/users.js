@@ -35,7 +35,7 @@ async function signUp({ name, email, password, confirmPassword }) {
 }
 
 /**
- * 註冊
+ * 更新密碼
  * @param {String} password password
  * @param {String} confirmPassword confirmPassword
  * @returns {Promise} promise
@@ -46,6 +46,23 @@ async function updatePassword({ password, confirmPassword }) {
     apiName: "updatePassword",
     method: "post",
     data: { password, confirmPassword },
+  });
+  return res.data.data;
+}
+
+/**
+ * 更新個人資料
+ * @param {String} name 暱稱
+ * @param {String} photo 照片網址
+ * @param {String} sex 性別
+ * @returns {Promise} promise
+ */
+async function updateProfile({ name, photo, sex }) {
+  const res = await callApi({
+    category: "users",
+    apiName: "updateProfile",
+    method: "patch",
+    data: { name, photo, sex },
   });
   return res.data.data;
 }
@@ -68,4 +85,5 @@ export default {
   signUp,
   getUser,
   updatePassword,
+  updateProfile,
 };

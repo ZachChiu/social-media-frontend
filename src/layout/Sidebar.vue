@@ -18,7 +18,7 @@
         <img
           v-if="navigation.img"
           :src="navigation.img"
-          class="object-contain w-[50px] h-[50px] rounded-full mr-4 border border-gray bg-info p-2"
+          class="object-contain w-[50px] h-[50px] rounded-full mr-4"
         />
         <i
           v-if="navigation.icon"

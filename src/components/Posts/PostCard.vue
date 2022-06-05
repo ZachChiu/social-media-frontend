@@ -49,7 +49,7 @@
       >
     </div>
     <div class="flex items-center mt-4">
-      <img class="w-[40px] mr-4 p-2" :src="userPhoto" alt="" />
+      <img class="w-[40px] mr-4 rounded-full" :src="userPhoto" alt="" />
 
       <div class="w-full h-full flex rounded-shadow overflow-hidden">
         <textarea

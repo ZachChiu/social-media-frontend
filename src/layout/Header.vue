@@ -16,7 +16,7 @@
       >
         <img
           :src="userPhoto"
-          class="object-contain h-full rounded-full border-dark border border-gray mr-3 p-1"
+          class="object-contain h-full rounded-full mr-3"
           alt=""
         />
         <p class="truncate max-w-[70px] border-b-2 font-bold font-azeret">

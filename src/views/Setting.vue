@@ -29,7 +29,7 @@ export default {
     const tabs = readonly([
       {
         key: "info",
-        text: "暱稱修改",
+        text: "資料修改",
       },
       {
         key: "password",
