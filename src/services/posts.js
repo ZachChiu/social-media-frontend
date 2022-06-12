@@ -116,6 +116,24 @@ async function getLikeList() {
   return res.data.data;
 }
 
+/**
+ * 留言
+ * @param {String} id 貼文 id
+ * @param {String} comment 留言內容
+ * @returns {Promise} promise
+ */
+async function addComment({ id, comment }) {
+  const res = await callApi({
+    category: "post",
+    apiName: `${id}/comment`,
+    method: "post",
+    data: {
+      comment,
+    },
+  });
+  return res.data.data;
+}
+
 export default {
   getPosts,
   getPost,
@@ -124,4 +142,5 @@ export default {
   unlikePost,
   getUserPosts,
   getLikeList,
+  addComment,
 };

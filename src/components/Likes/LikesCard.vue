@@ -1,15 +1,12 @@
 <template>
   <div class="card p-4 flex items-end justify-between">
     <div class="flex items-center">
-      <img class="w-[40px] mr-4" src="@/assets/img/default-user.png" alt="" />
-      <div>
-        <p class="link cursor-pointer" @click="onClickPersonal">
-          {{ post.user.name }}
-        </p>
-        <p class="text-sm text-gray">
-          發文時間： {{ dayjs(post.createdAt).format("YYYY/MM/DD mm:ss") }}
-        </p>
-      </div>
+      <Info
+        :username="post.user.name"
+        :avatar="post.user.photo"
+        :sub-text="subText"
+        @onClickPersonal="onClickPersonal"
+      ></Info>
     </div>
     <div class="flex items-center text-center">
       <div
@@ -40,7 +37,10 @@ import dayjs from "dayjs";
 import { computed } from "vue-demi";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import Info from "@/components/Common/Info.vue";
+
 export default {
+  components: { Info },
   props: {
     post: {
       type: Object,
@@ -65,6 +65,11 @@ export default {
       });
     };
 
+    const subText = computed(
+      () =>
+        `發文時間： ${dayjs(props.post.createdAt).format("YYYY/MM/DD mm:ss")}`
+    );
+
     const toggleLike = () => {
       if (props.post.isLoading) {
         return;
@@ -87,6 +92,7 @@ export default {
     return {
       dayjs,
       hasLikePost,
+      subText,
       onClickPersonal,
       toggleLike,
       onClick2Post,

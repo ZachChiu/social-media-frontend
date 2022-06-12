@@ -49,6 +49,7 @@
       class="mb-4 last:mb-0"
       @unlike-post="toggleLike($event, 'unlike')"
       @like-post="toggleLike($event, 'like')"
+      @add-comment="addComment($event, post.id)"
     >
     </PostCard>
   </template>
@@ -132,15 +133,33 @@ export default {
       }
     };
 
-    onMounted(() => {
-      getPosts();
-    });
+    const addComment = async (comment, id) => {
+      try {
+        const index = posts.findIndex((post) => post._id === id);
+        const result = await postsService.addComment({ comment, id });
+
+        posts[index].comments.unshift(result);
+      } catch (error) {
+        toast.error("留言失敗");
+      }
+    };
+
     watch(route, () => {
       if (route.name === "personal-wall") {
+        isLoading.value = true;
         getPosts();
       }
     });
+
+    onMounted(() => {
+      if (isLoading.value) {
+        return;
+      }
+      getPosts();
+    });
+
     return {
+      route,
       posts,
       isLoading,
       sortOption,
@@ -149,6 +168,7 @@ export default {
       getPosts,
       toggleLike,
       isUser,
+      addComment,
     };
   },
 };

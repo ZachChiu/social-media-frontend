@@ -6,6 +6,7 @@
     :post="post"
     @unlike-post="toggleLike($event, 'unlike')"
     @like-post="toggleLike($event, 'like')"
+    @add-comment="addComment($event, post.id)"
   >
   </PostCard>
 </template>
@@ -57,6 +58,16 @@ export default {
       }
     };
 
+    const addComment = async (comment, id) => {
+      try {
+        const result = await postsService.addComment({ comment, id });
+
+        post.comments.push(result);
+      } catch (error) {
+        toast.error("留言失敗");
+      }
+    };
+
     onMounted(() => {
       getPost();
     });
@@ -64,6 +75,7 @@ export default {
       post,
       isLoading,
       toggleLike,
+      addComment,
     };
   },
 };

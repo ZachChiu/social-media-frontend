@@ -1,24 +1,13 @@
 <template>
   <div class="post w-full p-5 card">
     <div class="post-info flex items-center mb-4">
-      <div
-        class="w-[45px] h-[45px] user-img-wrapper mr-4 rounded-full overflow-hidden"
-      >
-        <img
-          class="w-full h-full object-cover"
-          :class="{ 'p-2': !post.user.photo }"
-          :src="post.user.photo || defaultUserImg"
-          alt=""
-        />
-      </div>
-      <div>
-        <p class="link cursor-pointer" @click="onClickPersonal">
-          {{ post.user.name }}
-        </p>
-        <p class="text-xs text-gray">
-          {{ dayjs(post.createdAt).format("YYYY/MM/DD mm:ss") }}
-        </p>
-      </div>
+      <Info
+        :username="post.user.name"
+        :avatar="post.user.photo"
+        :sub-text="dayjs(post.createdAt).format('YYYY/MM/DD mm:ss')"
+        size="45"
+        @onClickPersonal="onClickPersonal"
+      ></Info>
     </div>
     <div class="content" v-html="processContent(post.content)"></div>
     <img
@@ -41,7 +30,7 @@
         :class="{ 'text-primary': hasLikePost }"
       ></i>
 
-      <span v-if="post.likes.length" class="ml-2 group-hover:text-primary">{{
+      <span v-if="post.likes?.length" class="ml-2 group-hover:text-primary">{{
         getLikesText
       }}</span>
       <span v-else class="ml-2 group-hover:text-primary"
@@ -49,7 +38,7 @@
       >
     </div>
     <div class="flex items-center mt-4">
-      <img class="w-[40px] mr-4 rounded-full" :src="userPhoto" alt="" />
+      <Avatar :avatar="userPhoto" size="35" />
 
       <div class="w-full h-full flex rounded-shadow overflow-hidden">
         <textarea
@@ -61,29 +50,46 @@
           autofocus
           autocomplete="off"
           class="py-1 px-2 rounded-r-none"
+          v-model="comment"
         ></textarea>
         <button
           class="btn-secondary block text-white w-[100px] font-[20px] outline-none rounded-l-none"
+          @click="onClickComment"
         >
           留言
         </button>
       </div>
     </div>
-
-    <Comment v-if="post.comment" class="mt-4"></Comment>
+    <template v-if="post.comments?.length">
+      <Comment
+        v-for="comment in inPostPage ? post.comments : [post.comments[0]]"
+        :key="comment._id"
+        :comment="comment"
+        class="mt-4"
+      ></Comment>
+      <p
+        v-if="!inPostPage && post.comments.length > 1"
+        class="mt-2 text-primary hover:underline cursor-pointer"
+        @click="onClick2Post"
+      >
+        查看全部
+      </p>
+    </template>
   </div>
 </template>
 
 <script>
 import Comment from "@/components/Posts/Comment.vue";
-import defaultUserImg from "@/assets/img/default-user.png";
+import Info from "@/components/Common/Info.vue";
+
+import Avatar from "@/components/Common/Avatar.vue";
 import dayjs from "dayjs";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 export default {
-  components: { Comment },
+  components: { Comment, Avatar, Info },
   props: {
     post: {
       type: Object,
@@ -95,9 +101,13 @@ export default {
   setup(props, { emit }) {
     const store = useStore();
     const router = useRouter();
+    const route = useRoute();
     const processContent = (conetent) => {
       return conetent.replace("\n", "<br>");
     };
+    const comment = ref("");
+
+    const inPostPage = computed(() => route.name === "post");
 
     const user = computed(() => store.getters["users/user"]);
 
@@ -106,8 +116,8 @@ export default {
     );
 
     const getLikesText = computed(() => {
-      let text = props.post.likes.length;
-      let num = props.post.likes.length;
+      let text = props.post?.likes.length;
+      let num = props.post?.likes.length;
       if (hasLikePost.value) {
         text = `你${num - 1 > 0 ? `和其他 ${num - 1} 人` : ""}`;
       }
@@ -132,16 +142,33 @@ export default {
       });
     };
 
+    const onClick2Post = () => {
+      router.push({
+        name: "post",
+        params: {
+          postId: props.post._id,
+        },
+      });
+    };
+
+    const onClickComment = () => {
+      emit("add-comment", comment.value);
+      comment.value = "";
+    };
+
     return {
       dayjs,
       onClickLike,
+      onClick2Post,
+      onClickComment,
       user,
       processContent,
       onClickPersonal,
       getLikesText,
       hasLikePost,
+      inPostPage,
       userPhoto: computed(() => store.getters["users/userPhoto"]),
-      defaultUserImg,
+      comment,
     };
   },
 };
