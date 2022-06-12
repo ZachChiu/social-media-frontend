@@ -10,8 +10,8 @@ const router = createRouter({
     },
     {
       path: "/",
-      name: "home",
-      component: () => import("@/views/Home.vue"),
+      name: "layout",
+      component: () => import("@/layout/Layout.vue"),
       redirect: { name: "posts-wall" },
       children: [
         {
@@ -30,9 +30,9 @@ const router = createRouter({
           component: () => import("@/views/CreatePost.vue"),
         },
         {
-          path: "follows",
-          name: "follows",
-          component: () => import("@/views/Follows.vue"),
+          path: "following",
+          name: "following",
+          component: () => import("@/views/Following.vue"),
         },
         {
           path: "likes",

@@ -23,12 +23,11 @@ import Sidebar from "@/layout/Sidebar.vue";
 import Navigation from "@/layout/Navigation.vue";
 
 export default {
-  name: "LayoutPage",
   components: { Header, Sidebar, Navigation },
   setup() {
     const store = useStore();
 
-    return { user: computed(() => store.getters["user/user"]) };
+    return { user: computed(() => store.getters["users/user"]) };
   },
 };
 </script>
