@@ -68,7 +68,7 @@ async function updateProfile({ name, photo, sex }) {
 }
 
 /**
- * 取得更人資料
+ * 取得個人資料
  * @returns {Promise} promise
  */
 async function getUser() {
@@ -80,10 +80,69 @@ async function getUser() {
   return res.data.data;
 }
 
+/**
+ * 取得個人資料
+ * @param {String} id id
+ * @returns {Promise} promise
+ */
+async function getUserById(id) {
+  const res = await callApi({
+    category: "users",
+    apiName: `profile/${id}`,
+    method: "get",
+  });
+  return res.data.data;
+}
+
+/**
+ * 追蹤
+ * @param {String} id 追蹤者id
+ * @returns {Promise} promise
+ */
+async function postFollow(id) {
+  const res = await callApi({
+    category: "users",
+    apiName: `${id}/follow`,
+    method: "post",
+  });
+  return res.data.data;
+}
+
+/**
+ * 取消追蹤
+ * @param {String} id 追蹤者id
+ * @returns {Promise} promise
+ */
+async function deleteFollow(id) {
+  const res = await callApi({
+    category: "users",
+    apiName: `${id}/follow`,
+    method: "delete",
+  });
+  return res.data.data;
+}
+
+/**
+ * 取得追蹤名單
+ * @returns {Promise} promise
+ */
+async function getFollowing() {
+  const res = await callApi({
+    category: "users",
+    apiName: "following",
+    method: "get",
+  });
+  return res.data.data;
+}
+
 export default {
   signIn,
   signUp,
   getUser,
+  getUserById,
   updatePassword,
   updateProfile,
+  postFollow,
+  deleteFollow,
+  getFollowing,
 };

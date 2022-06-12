@@ -15,11 +15,8 @@
         class="group flex items-center mb-[22px] last:mb-0 cursor-pointer"
         @click="onClickSideBar(navigation.value)"
       >
-        <img
-          v-if="navigation.img"
-          :src="navigation.img"
-          class="object-contain w-[50px] h-[50px] rounded-full mr-4"
-        />
+        <Avatar v-if="navigation.img" :avatar="navigation.img" size="50" />
+
         <i
           v-if="navigation.icon"
           class="w-[50px] h-[50px] transition group-hover:bg-primary group-hover:text-white mr-4 bg-info border border-gray rounded-full text-xl flex items-center justify-center"
@@ -37,8 +34,10 @@
 import { computed } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import Avatar from "@/components/Common/Avatar.vue";
 
 export default {
+  components: { Avatar },
   setup() {
     const router = useRouter();
     const store = useStore();
@@ -53,7 +52,7 @@ export default {
       },
       {
         icon: "fa-regular fa-bell",
-        value: "follows",
+        value: "following",
         text: "追蹤名單",
       },
       {

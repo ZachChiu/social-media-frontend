@@ -203,10 +203,12 @@ export default {
       photoBase64.value = data;
       isCropping.value = false;
     };
+
     const onClickDeletePhoto = () => {
       photoBase64.value = null;
       form.photo = null;
     };
+
     onMounted(() => {
       form.name = user.value.name;
       form.sex = user.value.sex;

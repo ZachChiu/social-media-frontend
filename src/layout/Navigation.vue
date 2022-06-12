@@ -37,7 +37,7 @@ export default {
       },
       {
         icon: "fa-solid fa-bell",
-        value: "follows",
+        value: "following",
       },
       {
         icon: "fa-solid fa-thumbs-up",
