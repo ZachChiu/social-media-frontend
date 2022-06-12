@@ -14,11 +14,8 @@
         aria-expanded="true"
         aria-haspopup="true"
       >
-        <img
-          :src="userPhoto"
-          class="object-contain h-full rounded-full mr-3"
-          alt=""
-        />
+        <Avatar :avatar="userPhoto" size="30" />
+
         <p class="truncate max-w-[70px] border-b-2 font-bold font-azeret">
           {{ user.name }}
         </p>
@@ -43,7 +40,10 @@
 import { reactive, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
+import Avatar from "@/components/Common/Avatar.vue";
+
 export default {
+  components: { Avatar },
   setup() {
     const router = useRouter();
     const route = useRoute();
