@@ -1,35 +1,37 @@
-# social-media-frontend
+# Social Media SideProject
 
-This template should help get you started developing with Vue 3 in Vite.
+此 side project 以社群媒體為故事背景，採前後端分離。
 
-## Recommended IDE Setup
+後端部分可參考 [social-media-backend](https://github.com/ZachChiu/social-media-backend
+)
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin).
+### 使用技術：
 
-## Customize configuration
+1. 使用 Vite 建立 Vue 3 專案
+2. 使用 axios 進行 RESTful API 介接
+3. Tailwind + SCSS 版面設計
+4. Vuex
+5. Vue Cropper 圖片裁切
+6. Vuelidate 資料驗證
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
 
-## Project Setup
 
-```sh
-npm install
-```
+### 網頁功能：
 
-### Compile and Hot-Reload for Development
+1. 登入註冊
+2. 查看動態牆
+3. 建立貼文(圖片裁切與上傳)
+4. 重設密碼
+5. 更新使用者資料(圖片裁切與上傳)
+6. 按讚貼文
+7. 追蹤使用者
+8. 留言
 
-```sh
-npm run dev
-```
 
-### Compile and Minify for Production
+### 未來追加功能：
 
-```sh
-npm run build
-```
+1. Google / Facebook / Line 登入註冊
+2. 金流服務
+3. Socket 聊天室
 
-### Lint with [ESLint](https://eslint.org/)
 
-```sh
-npm run lint
-```
