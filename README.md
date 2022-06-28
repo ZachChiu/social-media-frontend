@@ -1,4 +1,4 @@
-# Social Media Side Project
+# Social Media Frontend
 
 此 side project 以社群媒體為故事背景，採前後端分離。
 
