@@ -26,6 +26,7 @@
               v-model="form.email"
               @blur="v$.email.$touch()"
             />
+
             <p
               v-if="v$.email.$invalid"
               class="text-danger mt-2 text-xs text-left absolute"
@@ -63,6 +64,20 @@
               class="fa-solid fa-spinner text-white animate-spin-slow"
             ></i>
           </button>
+          <div class="flex mb-4">
+            <a
+              class="bg-white hover:bg-gray-light border border-gray rounded-md flex items-center justify-center py-2 mr-2 w-[50%]"
+              href="https://www.uyifuy.tk/users/google"
+            >
+              <img class="w-7 mr-2" :src="GoogleImg" />
+              Google
+            </a>
+            <div
+              class="cursor-pointer bg-[#00B900] hover:bg-[#009300] border border-gray rounded-md text-white flex items-center justify-center w-[50%] py-2"
+            >
+              Line 帳號登入
+            </div>
+          </div>
           <RouterLink class="link" to="/sign-up">註冊帳號</RouterLink>
         </form>
       </div>
@@ -74,17 +89,23 @@
 import { useStore } from "vuex";
 import { reactive, ref } from "vue";
 import { useToast } from "vue-toastification";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import MetaWallImg from "@/assets/img/meta-wall.png";
 import useVuelidate from "@vuelidate/core";
 import { required, email, minLength, helpers } from "@vuelidate/validators";
+import GoogleImg from "/public/Google.png";
 
 export default {
   setup() {
     const toast = useToast();
     const store = useStore();
     const router = useRouter();
+    const route = useRoute();
 
+    if (route.query.error === "login-fail") {
+      toast.error("登入失敗，請使用其他帳號");
+      router.push({ name: "sign-in" });
+    }
     let isLoading = ref(false);
 
     const form = reactive({
@@ -134,6 +155,7 @@ export default {
       MetaWallImg,
       form,
       onClickLogin,
+      GoogleImg,
     };
   },
 };

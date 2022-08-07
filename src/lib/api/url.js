@@ -1,4 +1,4 @@
-const domain = "https://meta-wall.herokuapp.com/";
+const domain = "https://uyifuy.tk/";
 const url = {
   posts: domain + "posts/",
   post: domain + "post/",

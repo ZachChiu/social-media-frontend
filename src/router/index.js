@@ -12,6 +12,9 @@ const router = createRouter({
       path: "/",
       name: "layout",
       component: () => import("@/layout/Layout.vue"),
+      meta: {
+        requireAuth: true,
+      },
       redirect: { name: "posts-wall" },
       children: [
         {
@@ -44,6 +47,7 @@ const router = createRouter({
           name: "personal-wall",
           component: () => import("@/views/PersonalWall.vue"),
         },
+
         {
           path: "setting",
           name: "setting",
@@ -61,12 +65,17 @@ const router = createRouter({
       name: "sign-up",
       component: () => import("@/views/SignUp.vue"),
     },
+    {
+      path: "/callback",
+      name: "callback",
+      component: () => import("@/views/LoginCallback.vue"),
+    },
   ],
 });
 
 router.beforeEach(async (to, from, next) => {
   const hasAuth = localStorage.getItem("jwt");
-  if (hasAuth || ["sign-in", "sign-up", "not-found"].includes(to.name)) {
+  if (hasAuth || !to.meta.requireAuth) {
     next();
   } else {
     next({ name: "sign-in" });

@@ -16,7 +16,7 @@ export default {
     const store = useStore();
 
     return {
-      isLoading: computed(() => store.state.env.isLoading),
+      isLoading: computed(() => store.state.env.isPageLoading),
     };
   },
 };
