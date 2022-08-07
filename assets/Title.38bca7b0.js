@@ -1,1 +1,0 @@
-import{_ as e,o as r,c as o,t as s}from"./index.e9d10c37.js";const c={props:{title:{type:String,require:!0}}},n={class:"title text-center text-lg card py-4 font-azeret font-bold mb-4"};function a(i,l,t,p,_,d){return r(),o("div",n,s(t.title),1)}var m=e(c,[["render",a]]);export{m as T};
