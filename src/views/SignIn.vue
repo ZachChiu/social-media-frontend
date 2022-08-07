@@ -67,7 +67,7 @@
           <div class="flex mb-4">
             <a
               class="bg-white hover:bg-gray-light border border-gray rounded-md flex items-center justify-center py-2 mr-2 w-[50%]"
-              href="https://www.uyifuy.tk/users/google"
+              href="https://meta-wall.herokuapp.com/users/google"
             >
               <img class="w-7 mr-2" :src="GoogleImg" />
               Google
