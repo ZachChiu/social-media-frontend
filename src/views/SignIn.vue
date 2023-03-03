@@ -67,13 +67,14 @@
           <div class="flex mb-4">
             <a
               class="bg-white hover:bg-gray-light border border-gray rounded-md flex items-center justify-center py-2 mr-2 w-[50%]"
-              href="https://meta-wall.herokuapp.com/users/google"
+              href="https://social-media-e363.onrender.com/users/google"
             >
               <img class="w-7 mr-2" :src="GoogleImg" />
               Google
             </a>
             <div
               class="cursor-pointer bg-[#00B900] hover:bg-[#009300] border border-gray rounded-md text-white flex items-center justify-center w-[50%] py-2"
+              @click="onClickLineLogin"
             >
               Line 帳號登入
             </div>
@@ -149,12 +150,17 @@ export default {
       }
     };
 
+    const onClickLineLogin = async () => {
+      toast.info("即將推出呦!!!");
+    };
+
     return {
       v$,
       isLoading,
       MetaWallImg,
       form,
       onClickLogin,
+      onClickLineLogin,
       GoogleImg,
     };
   },
