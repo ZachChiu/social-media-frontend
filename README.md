@@ -28,11 +28,12 @@
 6. 按讚貼文
 7. 追蹤使用者
 8. 留言
+9. Google 登入註冊
 
 
 ### 未來追加功能：
 
-1. Google / Facebook / Line 登入註冊
+1. Facebook / Line 登入註冊
 2. 金流服務
 3. Socket 聊天室
 
