@@ -7,6 +7,7 @@
 import { useStore } from "vuex";
 import { computed, onMounted } from "vue";
 import Loading from "@/components/Common/Loading.vue";
+import Cookies from "js-cookie";
 
 export default {
   name: "App",
@@ -14,7 +15,7 @@ export default {
 
   setup() {
     const store = useStore();
-    const jwt = localStorage.getItem("jwt");
+    const jwt = Cookies.get("jwt");
 
     onMounted(() => {
       if (jwt) {

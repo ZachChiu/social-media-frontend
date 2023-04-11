@@ -1,5 +1,6 @@
 import axios from "axios";
 import url from "./url.js";
+import Cookies from "js-cookie";
 
 /**
  * 呼叫 API 函式，並可以將資料存在 APP 內(但是不包含讀取)
@@ -22,7 +23,7 @@ async function callApi({
   const apiUrl = url[category] + apiName;
 
   const sendHeaders = Object.assign(headers, {
-    Authorization: localStorage.getItem("jwt"),
+    Authorization: Cookies.get("jwt"),
     Accept: "application/json",
   });
 

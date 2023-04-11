@@ -5,7 +5,7 @@
       name=""
       id=""
       class="py-3 pl-4 pr-1 mr-3 outline-none shadow-md rounded-lg bg-white"
-      @change="getPosts"
+      @change="getMorePosts"
     >
       <option
         v-for="option in sortOption"
@@ -21,11 +21,11 @@
         type="text"
         v-model="searchKeyword"
         placeholder="搜尋貼文"
-        @keyup.enter="getPosts"
+        @keyup.enter="getMorePosts"
       />
       <button
         class="block text-white w-[46px] btn-secondary font-[20px] outline-none rounded-l-none"
-        @click="getPosts"
+        @click="getMorePosts"
       >
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
@@ -52,6 +52,14 @@
       @add-comment="addComment($event, post.id)"
     >
     </PostCard>
+    <InfiniteLoading @infinite="getMorePosts">
+      <template #spinner>
+        <LoadingCard />
+      </template>
+      <template #complete>
+        <p class="text-center">已經沒有貼文惹！</p>
+      </template>
+    </InfiniteLoading>
   </template>
 </template>
 
@@ -60,13 +68,15 @@ import PostCard from "@/components/Posts/PostCard.vue";
 import LoadingCard from "@/components/Common/LoadingCard.vue";
 import EmptyCard from "@/components/Common/EmptyCard.vue";
 import postsService from "@/services/posts.js";
-import { ref, reactive, readonly, onMounted, computed, watch } from "vue";
+import InfiniteLoading from "v3-infinite-loading";
+import "v3-infinite-loading/lib/style.css";
+import { ref, reactive, readonly, onMounted, computed } from "vue";
 import { useToast } from "vue-toastification";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 
 export default {
-  components: { PostCard, LoadingCard, EmptyCard },
+  components: { PostCard, LoadingCard, EmptyCard, InfiniteLoading },
   setup() {
     const toast = useToast();
     const store = useStore();
@@ -76,6 +86,9 @@ export default {
     let searchKeyword = ref(null);
     let posts = reactive([]);
     let isLoading = ref(false);
+    const limit = ref(10);
+    let count = ref(0);
+
     const sortOption = readonly([
       {
         text: "最新貼文",
@@ -90,26 +103,45 @@ export default {
     const user = computed(() => store.getters["users/user"]);
     const isUser = computed(() => user.value._id === route.params.userId);
 
-    const getPosts = async () => {
+    const getMorePosts = async ($state) => {
       try {
-        posts.splice(0);
-        isLoading.value = true;
+        if (!$state) {
+          posts.splice(0);
+          isLoading.value = true;
+        }
+
         let result = null;
         if (route.name === "posts-wall") {
           result = await postsService.getPosts({
             timeSort: timeSort.value,
             content: searchKeyword.value,
+            limit: limit.value,
+            skip: posts.length,
           });
         } else {
           result = await postsService.getUserPosts({
             userId: route.params.userId,
             timeSort: timeSort.value,
             content: searchKeyword.value,
+            limit: limit.value,
+            skip: posts.length,
           });
         }
-        posts.push(...result);
+
+        count.value = result.count;
+        posts.push(...result.posts);
+        if ($state) {
+          if (posts.length >= count.value) {
+            $state.complete();
+          } else {
+            $state.loaded();
+          }
+        }
         isLoading.value = false;
       } catch (error) {
+        if ($state) {
+          $state.complete();
+        }
         toast.error("載入貼文失敗，請重新整理");
       }
     };
@@ -144,18 +176,11 @@ export default {
       }
     };
 
-    watch(route, () => {
-      if (route.name === "personal-wall") {
-        isLoading.value = true;
-        getPosts();
-      }
-    });
-
     onMounted(() => {
       if (isLoading.value) {
         return;
       }
-      getPosts();
+      getMorePosts();
     });
 
     return {
@@ -165,7 +190,7 @@ export default {
       sortOption,
       timeSort,
       searchKeyword,
-      getPosts,
+      getMorePosts,
       toggleLike,
       isUser,
       addComment,

@@ -1,5 +1,6 @@
 import usersService from "@/services/users.js";
 import defaultUserImg from "@/assets/img/default-user.png";
+import Cookies from "js-cookie";
 
 const state = {
   user: {},
@@ -34,14 +35,14 @@ const actions = {
 
 const mutations = {
   setJWT(state, data) {
-    localStorage.setItem("jwt", `Bearer ${data.jwt}`);
+    Cookies.set("jwt", `Bearer ${data.jwt}`, { expires: 7, path: "" });
   },
   setUser(state, data) {
     state.user = data;
   },
   setSignOut(state) {
     state.user = null;
-    localStorage.removeItem("jwt");
+    Cookies.remove("jwt");
   },
 };
 

@@ -4,12 +4,16 @@ import { callApi } from "@/lib/api/callApi";
  * 取得貼文
  * @param {String} timeSort 時間排序
  * @param {String} content 搜尋內容
+ * @param {String} limit 搜尋長度
+ * @param {String} skip 已搜尋長度
  * @returns {Promise} promise
  */
-async function getPosts({ timeSort, content }) {
+async function getPosts({ timeSort, content, limit, skip }) {
   const params = {
     timeSort,
     content,
+    limit,
+    skip,
   };
   const res = await callApi({
     category: "posts",
@@ -39,12 +43,16 @@ async function getPost(postId) {
  * @param {String} userId 使用者 id
  * @param {String} timeSort 時間排序
  * @param {String} content 搜尋內容
+ * @param {String} limit 搜尋長度
+ * @param {String} skip 已搜尋長度
  * @returns {Promise} promise
  */
-async function getUserPosts({ userId, timeSort, content }) {
+async function getUserPosts({ userId, timeSort, content, limit, skip }) {
   const params = {
     timeSort,
     content,
+    limit,
+    skip,
   };
 
   const res = await callApi({

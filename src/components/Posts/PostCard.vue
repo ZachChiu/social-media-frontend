@@ -34,7 +34,7 @@
         getLikesText
       }}</span>
       <span v-else class="ml-2 group-hover:text-primary"
-        >成為第一個按讚的朋友</span
+        >成為第一個讚讚的朋友</span
       >
     </div>
     <div class="flex items-center mt-4">
@@ -116,10 +116,10 @@ export default {
     );
 
     const getLikesText = computed(() => {
-      let text = props.post?.likes.length;
+      let text = `${props.post?.likes.length}個讚讚!`;
       let num = props.post?.likes.length;
       if (hasLikePost.value) {
-        text = `你${num - 1 > 0 ? `和其他 ${num - 1} 人` : ""}`;
+        text = `你${num - 1 > 0 ? `和其他 ${num - 1} 人` : ""}按惹讚讚!`;
       }
       return text;
     });

@@ -110,8 +110,8 @@ export default {
     let isLoading = ref(false);
 
     const form = reactive({
-      email: "",
-      password: "",
+      email: "test-member@gmail.com",
+      password: "Qq12345678",
     });
 
     const rules = {
@@ -144,6 +144,7 @@ export default {
         await store.dispatch("users/getUser");
         router.push({ name: "posts-wall" });
       } catch (error) {
+        console.log("error", error);
         toast.error(error || "登入失敗");
       } finally {
         isLoading.value = false;

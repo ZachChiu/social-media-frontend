@@ -1,6 +1,11 @@
 <template>
   <div class="info flex items-center">
-    <Avatar :avatar="avatar" :size="size" />
+    <Avatar
+      class="cursor-pointer"
+      :avatar="avatar"
+      :size="size"
+      @click="onClickPersonal"
+    />
 
     <div>
       <p class="link cursor-pointer" @click="onClickPersonal">

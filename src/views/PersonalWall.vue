@@ -36,7 +36,7 @@
       </button>
     </div>
   </div>
-  <PostWall />
+  <PostWall :key="currentUserId" />
 </template>
 
 <script>
@@ -60,21 +60,25 @@ export default {
     const isFetching = ref(false);
     let personalData = reactive({});
 
+    const currentUserId = computed(() => route.params.userId);
     const user = computed(() => store.getters["users/user"]);
-    const isUser = computed(() => user.value._id === route.params.userId);
+    const isUser = computed(() => user.value._id === currentUserId.value);
 
     const hasFollowed = computed(() => {
       if (isUser.value) {
         return false;
       } else {
         return user.value?.following?.some(
-          (follow) => follow.user._id === route.params.userId
+          (follow) => follow.user._id === currentUserId.value
         );
       }
     });
 
     const getPersonalData = async () => {
-      const result = await userService.getUserById(route.params.userId);
+      for (let key in personalData) {
+        delete personalData[key];
+      }
+      const result = await userService.getUserById(currentUserId.value);
       Object.assign(personalData, result);
     };
 
@@ -86,15 +90,15 @@ export default {
         isFetching.value = true;
 
         if (hasFollowed.value) {
-          await userService.deleteFollow(route.params.userId);
+          await userService.deleteFollow(currentUserId.value);
         } else {
-          await userService.postFollow(route.params.userId);
+          await userService.postFollow(currentUserId.value);
         }
         await getPersonalData();
         await store.dispatch("users/getUser");
-        toast.success(hasFollowed.value ? "已取消追蹤" : "已追蹤");
+        toast.success(hasFollowed.value ? "已追蹤" : "已取消追蹤");
       } catch (error) {
-        toast.error(hasFollowed.value ? "取消追蹤失敗" : "追蹤失敗");
+        toast.error(hasFollowed.value ? "追蹤失敗" : "取消追蹤失敗");
       } finally {
         isFetching.value = false;
       }
@@ -124,6 +128,7 @@ export default {
       isFetching,
       hasFollowed,
       toggleFollow,
+      currentUserId,
     };
   },
 };

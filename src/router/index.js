@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import Cookies from "js-cookie";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -74,7 +75,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const hasAuth = localStorage.getItem("jwt");
+  const hasAuth = Cookies.get("jwt");
   if (hasAuth || !to.meta.requireAuth) {
     next();
   } else {
